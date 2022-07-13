@@ -25,7 +25,21 @@ The workspace contains two folders by default, where:
 - `lib`: the folder to maintain dependencies
 
 Meanwhile, the compiled output files will be generated in the `bin` folder by default.
+## Running the project
+<br/>
 
+# `Take Note`
+> ### - When your running your app on machine the server address or the host is `localhost` or `127.0.0.1`. But if connected to any network be sure to use internet address then run the server on a different machine but connected on the same network.
+>### - Always start by running the server first then the client.
+- The client
+```
+     java -cp ./bin HotelClient
+```
+
+- Starting the server 
+```
+    java -cp ./bin HotelServer
+```
 > If you want to customize the folder structure, open `.vscode/settings.json` and update the related settings there.
 
 ## Dependency Management
