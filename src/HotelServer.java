@@ -17,7 +17,7 @@ public class HotelServer {
         // Here the server  register the identifier of a remote object by name to the rmi on localhost:1099/RoomManager
         Naming.rebind("rmi://localhost:1099/RoomManager", stub);
         
-        System.out.println("|     Client bound on rmi://localhost:1099/RoomManager       |");
+        System.out.println("|     Client bound on rmi://localhost:1099/RoomManager      |");
         System.out.println("+===========================================================+");
 
         }catch(Exception e){

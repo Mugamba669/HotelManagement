@@ -6,11 +6,15 @@ public class RoomManagerImpl extends UnicastRemoteObject implements RoomManager 
     protected RoomManagerImpl() throws RemoteException {
         super();
     }
-    ArrayList<String[]> storage = new ArrayList<String[]>();
-    /**
-     *
-     */
-    ArrayList<String[]> revenue = new ArrayList<String[]>();
+    // storage for booked rooms and guests
+    ArrayList<Guests> storage = new ArrayList<Guests>();
+    // Array of available rooms
+    String[] rooms = {"v rooms","w rooms","x rooms","y rooms","z rooms"};
+    // Array of room types
+    String[] roomsType = {"Zero","One","Two","Three","Four"};
+    
+    // amount for each room
+    int[] amount = {55000,75000,80000,150000,230000};
     @Override
     public String showRoomList() {
     String  list =  "\n"+
@@ -27,33 +31,28 @@ public class RoomManagerImpl extends UnicastRemoteObject implements RoomManager 
 
     @Override
     public String executeBooking(String room, String client) throws RemoteException {
+        int count = 0;
         // saving booked rooms together with the client's name
-        String[] data = {client,room};
+        Guests data = new Guests(client, rooms[Integer.parseInt(room)], roomsType[Integer.parseInt(room)],  amount[Integer.parseInt(room)], count+=1);
         storage.add(data);
 
         return commonMsg(client+"'s room booked successfully");
     }
+     
     @Override 
-    public ArrayList<String[]> printSavedClients() throws RemoteException {
+    public ArrayList<Guests> printSavedClients() throws RemoteException {
         return storage;
     }
+
     @Override
-    public String printRevenue() throws RemoteException {
+    public ArrayList<Guests> printRevenue() throws RemoteException {
         /// Tracking the booked 
-        int count = 0;
-        for(int i = 0; i < storage.size(); i++){
-            if(storage.get(i)[1].equals("w")){
-                count++;
-                String[] w = {"w",String.valueOf(count)};
-                revenue.add(w);
-            }
-        }
-        return ""+count+"";
+        return storage;
     }
    public String commonMsg(String data){
-    String msg = "+===========================================+\n"+
-                 "|    "+data+"                               |\n"+
-                 "+===========================================+\n";
+    String msg = "+=======================================================+\n"+
+                 "|        "+data+"                                          \n"+
+                 "+=======================================================+\n";
         return msg;
    }
 }
