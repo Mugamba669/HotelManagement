@@ -1,13 +1,25 @@
-import java.net.MalformedURLException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class HotelClient {
+
     static int x = 0,w = 0,y = 0,z = 0, v = 0;
+
+    static int a = 0, b =0, c =0, d =0 ,e =0;
+
+    static int[][] available = {{0,0,0,0,0,0},{10,10,10,10,10}};
+
     static int totalRevenue = 0;
-    public static String printHelpMessage(){
+
+    static File file = new File("available.db");
+
+  public static String printHelpMessage(){
         String msg=  " +==============================================================================================================================================================+\n"+
                      " |                                                    Welcome to Hotel Room Reservation System                                                                  |\n"+
                     //  " +==============================================================================================================================================================+\n"+
@@ -25,7 +37,7 @@ public class HotelClient {
                return msg;
            }
 
-           public static void runCommand(String[] command) throws MalformedURLException, RemoteException, NotBoundException {
+           public static void runCommand(String[] command) throws NotBoundException, FileNotFoundException, IOException {
             //   client looks up a remote object by name
                  RoomManager stub = (RoomManager) Naming.lookup("rmi://"+command[1]+":1099/RoomManager");
 
@@ -75,6 +87,7 @@ public class HotelClient {
                         if(store.get(i).room.equals(Rooms.rooms[0])){
                             if(v == 0){
                             System.out.println("|  "+store.get(i).room+" |    "+store.get(i).roomType+"    |           "+Rooms.countRooms(store, store.get(i).room)+"        |    "+(store.get(i).amount * Rooms.countRooms(store, store.get(i).room))+"    |");
+                           available[0][0] = Rooms.countRooms(store, store.get(i).room);
                             totalRevenue += (store.get(i).amount * Rooms.countRooms(store, store.get(i).room)); 
                             v++;
                             }
@@ -82,6 +95,7 @@ public class HotelClient {
                         } else  if(store.get(i).room.equals(Rooms.rooms[1])){
                             if(w == 0){
                             System.out.println("|  "+store.get(i).room+" |    "+store.get(i).roomType+"    |           "+Rooms.countRooms(store, store.get(i).room)+"        |    "+(store.get(i).amount * Rooms.countRooms(store, store.get(i).room))+"    |");
+                           available[0][1] = Rooms.countRooms(store, store.get(i).room);
                             totalRevenue += (store.get(i).amount * Rooms.countRooms(store, store.get(i).room));
                             w++;
                             }
@@ -89,6 +103,7 @@ public class HotelClient {
                         } else  if(store.get(i).room.equals(Rooms.rooms[2])){
                             if(x == 0){
                             System.out.println("|  "+store.get(i).room+" |    "+store.get(i).roomType+"    |           "+Rooms.countRooms(store, store.get(i).room)+"        |    "+(store.get(i).amount * Rooms.countRooms(store, store.get(i).room))+"    |");
+                            available[0][2] = Rooms.countRooms(store, store.get(i).room);
                             totalRevenue += (store.get(i).amount * Rooms.countRooms(store, store.get(i).room));
                             x++;
                             }
@@ -96,6 +111,7 @@ public class HotelClient {
                         } else  if(store.get(i).room.equals(Rooms.rooms[3])){
                             if(y == 0){
                             System.out.println("|  "+store.get(i).room+" |    "+store.get(i).roomType+"    |           "+Rooms.countRooms(store, store.get(i).room)+"        |    "+(store.get(i).amount * Rooms.countRooms(store, store.get(i).room))+"    |");
+                           available[0][3] = Rooms.countRooms(store, store.get(i).room);
                             totalRevenue += (store.get(i).amount * Rooms.countRooms(store, store.get(i).room)); 
                             y++;
                             }
@@ -103,6 +119,7 @@ public class HotelClient {
                         } else  if(store.get(i).room.equals(Rooms.rooms[4])){
                             if(z == 0){
                             System.out.println("|  "+store.get(i).room+" |    "+store.get(i).roomType+"    |           "+Rooms.countRooms(store, store.get(i).room)+"        |    "+(store.get(i).amount * Rooms.countRooms(store, store.get(i).room))+"    |");
+                            available[0][4] = Rooms.countRooms(store, store.get(i).room);
                             totalRevenue += (store.get(i).amount * Rooms.countRooms(store, store.get(i).room)); 
                             z++;
                             }
@@ -114,7 +131,17 @@ public class HotelClient {
                     System.out.println("+------------------------------------------------------------+");
                     System.out.println("|  Total  Revenue generated    |        UGX:"+totalRevenue+"          |");
                     System.out.println("+------------------------------------------------------------+");
-                        
+                    
+                  
+              for (int i = 0; i < 5; i++) {
+                    available[1][i] = (available[1][i] - available[0][i]);
+              }
+                    
+                        ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream("available.db"));
+                        writer.writeObject(available);
+                        writer.close();
+                    // }
+                       
                     }
                     System.out.println();
                 }  else{
